@@ -124,24 +124,18 @@
     pIdx.textContent = String(cur).padStart(2, '0');
   };
 
-  /* ---------- ЕДИНЫЙ SCROLL-HANDLER (rAF) ---------- */
+  /* ---------- ЕДИНЫЙ SCROLL-HANDLER (rAF-throttle) ---------- */
   let ticking = false;
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      onHeader(); parallax(); processTick();
-      setMenu(false); // не закрываем намеренно — только ниже флаг
-      ticking = false;
-    });
+  const onScrollFrame = () => {
+    onHeader();
+    parallax();
+    processTick();
+    ticking = false;
   };
-  // (закрытие меню по скроллу не делаем принудительным, чтобы не мешать тапам)
   addEventListener('scroll', () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => { onHeader(); parallax(); processTick(); ticking = false; });
+    if (!ticking) { ticking = true; requestAnimationFrame(onScrollFrame); }
   }, { passive: true });
-  addEventListener('resize', () => { measure(); parallax(); });
+  addEventListener('resize', () => { measure(); parallax(); onHeader(); });
   addEventListener('load', () => { measure(); onHeader(); processTick(); });
   measure(); onHeader();
 
