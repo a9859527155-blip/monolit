@@ -172,11 +172,12 @@ body.menu-open .mnav a{opacity:1;transform:none}
 
 .hero-title{font:600 clamp(2.45rem,5.9vw,5.3rem)/1.05 var(--serif);letter-spacing:-.015em;margin:26px 0 26px}
 .hline{display:block;overflow:hidden;padding-bottom:.09em;margin-bottom:-.09em}
-.hline-in{display:block;will-change:transform}
-.js .hline-in{transform:translateY(115%);transition:transform 1.15s var(--ease)}
-.js .is-ready .hline-in{transform:none}
-.js .hline:nth-child(2) .hline-in{transition-delay:.13s}
-.js .hline:nth-child(3) .hline-in{transition-delay:.26s}
+/* Въезд строк заголовка: чистый CSS, без JS. fill-mode:both гарантирует:
+   до старта строка спрятана, после финала — ВСЕГДА видима. */
+.hline-in{display:block;will-change:transform;animation:hline-rise 1.05s var(--ease) both}
+.hline:nth-child(2) .hline-in{animation-delay:.13s}
+.hline:nth-child(3) .hline-in{animation-delay:.26s}
+@keyframes hline-rise{from{transform:translateY(115%)}to{transform:translateY(0)}}
 .hline-accent{color:var(--bronze);font-style:italic;font-weight:500}
 
 .hero-lead{max-width:46ch;color:var(--ink-dim);font-size:clamp(.98rem,1.2vw,1.12rem);margin-bottom:38px}
@@ -554,10 +555,10 @@ html.has-cursor,html.has-cursor a,html.has-cursor button,html.has-cursor label,h
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
-  /* статичная ОДНА строка ленты вместо переносов — выглядит как замысел */
-  .marquee-track{animation:none}
+  /* ТРЕБОВАНИЕ ЗАКАЗЧИКА: лента клиентов бежит всегда, одной строкой,
+     даже при системном «уменьшить анимацию» (перебивает универсальное правило) */
+  .marquee-track{animation:mq 30s linear infinite !important}
   .kenburns img{animation:none}
-  .js .hline-in{transform:none}
   .js [data-reveal]{opacity:1;transform:none}
   .cursor-dot,.cursor-ring{display:none}
 }

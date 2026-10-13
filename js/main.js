@@ -3,6 +3,7 @@
    Меню · Reveal · Scramble · Счётчики · Параллакс · Аккордеоны
    Кастомные селекты · Калькулятор · Маска · Форма · Лайтбокс · Курсор
    Фолбэки картинок
+   Заголовок героя анимируется чистым CSS (keyframes) — JS не нужен.
    ============================================================ */
 (() => {
   'use strict';
@@ -43,15 +44,6 @@
   };
   burger.addEventListener('click', () => setMenu(!document.body.classList.contains('menu-open')));
   $$('#mnav a').forEach(a => a.addEventListener('click', () => setMenu(false)));
-
-  /* ---------- HERO: ЗАГРУЗКА ЗАГОЛОВКА + СТРАХОВКА ---------- */
-  requestAnimationFrame(() => requestAnimationFrame(() =>
-    document.documentElement.classList.add('is-ready')
-  ));
-  // если на каком-то устройстве rAF затроттлился — форсируем показ после load
-  addEventListener('load', () => setTimeout(() =>
-    document.documentElement.classList.add('is-ready'), 900
-  ));
 
   /* ---------- SCROLL REVEAL ---------- */
   const revealObs = new IntersectionObserver(entries => {
