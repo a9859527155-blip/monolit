@@ -44,6 +44,13 @@
   };
   burger.addEventListener('click', () => setMenu(!document.body.classList.contains('menu-open')));
   $$('#mnav a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+    // закрытие по Esc и по клику на пустой фон меню
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.body.classList.contains('menu-open')) setMenu(false);
+  });
+  $('#mnav').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) setMenu(false);
+  });
 
   /* ---------- SCROLL REVEAL ---------- */
   const revealObs = new IntersectionObserver(entries => {
