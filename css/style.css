@@ -211,9 +211,7 @@ body.menu-open .mnav a{opacity:1;transform:none}
 .stamp b{color:var(--bronze);font-weight:500}
 .hero-coords{position:absolute;right:0;top:-34px;font-size:10px;letter-spacing:.24em;color:var(--muted)}
 
-.hero-scroll{position:absolute;left:calc((100vw - min(1320px,100vw - clamp(32px,6vw,96px)))/2);bottom:30px;display:flex;align-items:center;gap:14px;font-size:9.5px;letter-spacing:.3em;color:var(--muted)}
-.hero-scroll span{width:56px;height:1px;background:var(--bronze);position:relative;overflow:hidden}
-.hero-scroll span::after{content:'';position:absolute;inset:0;background:var(--ink);animation:scan 2.4s var(--ease-io) infinite}
+
 @keyframes scan{0%{transform:translateX(-110%)}55%,100%{transform:translateX(110%)}}
 
 /* ---------- CLIENTS / MARQUEE ---------- */
