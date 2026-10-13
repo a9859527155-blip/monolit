@@ -536,13 +536,13 @@ html.has-cursor,html.has-cursor a,html.has-cursor button,html.has-cursor label,h
   .bento{grid-template-columns:1fr}
   .b-xl,.b-w2{grid-column:span 1}
   .ctrl-row{grid-template-columns:1fr}
-  .acc-btn{grid-template-columns:auto auto;grid-template-rows:auto auto;row-gap:10px;position:relative}
+  /* мобильный аккордеон: крестик вне потока, текст с зарезервированным отступом */
+  .acc-btn{grid-template-columns:auto auto;grid-template-rows:auto auto;row-gap:10px;position:relative;padding-right:54px}
   .acc-idx{grid-row:1}
   .acc-name{grid-column:1/-1;grid-row:2}
   .acc-price{grid-row:1;justify-self:end}
-  .acc-plus{display:none}
-  .acc-btn::after{content:'+';position:absolute;right:6px;top:30px;font:300 24px/1 var(--mono);color:var(--bronze);transition:transform .5s var(--ease)}
-  .open > h3 .acc-btn::after{transform:rotate(45deg)}
+  .acc-plus{position:absolute;right:10px;top:50%;width:30px;height:30px;transform:translateY(-50%)}
+  .open > h3 .acc-plus{transform:translateY(-50%) rotate(225deg)}
   .hero-scroll{display:none}
   .stamp{left:-8px;bottom:16px}
   .lb-prev{left:8px}.lb-next{right:8px}
@@ -554,7 +554,8 @@ html.has-cursor,html.has-cursor a,html.has-cursor button,html.has-cursor label,h
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
-  .marquee-track{animation:none;flex-wrap:wrap;width:auto}
+  /* статичная ОДНА строка ленты вместо переносов — выглядит как замысел */
+  .marquee-track{animation:none}
   .kenburns img{animation:none}
   .js .hline-in{transform:none}
   .js [data-reveal]{opacity:1;transform:none}

@@ -2,6 +2,7 @@
    МОНОЛИТ · main.js
    Меню · Reveal · Scramble · Счётчики · Параллакс · Аккордеоны
    Кастомные селекты · Калькулятор · Маска · Форма · Лайтбокс · Курсор
+   Фолбэки картинок
    ============================================================ */
 (() => {
   'use strict';
@@ -13,6 +14,15 @@
   const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
   document.documentElement.classList.add('js');
+
+  /* ---------- ФОЛБЭКИ КАРТИНОК (если основной CDN недоступен) ---------- */
+  $$('img[data-fb]').forEach(img => {
+    img.addEventListener('error', () => {
+      if (img.dataset.fbUsed) return;
+      img.dataset.fbUsed = '1';
+      img.src = img.dataset.fb;
+    }, { once: true });
+  });
 
   /* ---------- HEADER + ПРОГРЕСС ---------- */
   const header = $('#siteHeader');
@@ -34,9 +44,13 @@
   burger.addEventListener('click', () => setMenu(!document.body.classList.contains('menu-open')));
   $$('#mnav a').forEach(a => a.addEventListener('click', () => setMenu(false)));
 
-  /* ---------- HERO: ЗАГРУЗКА ЗАГОЛОВКА ---------- */
+  /* ---------- HERO: ЗАГРУЗКА ЗАГОЛОВКА + СТРАХОВКА ---------- */
   requestAnimationFrame(() => requestAnimationFrame(() =>
     document.documentElement.classList.add('is-ready')
+  ));
+  // если на каком-то устройстве rAF затроттлился — форсируем показ после load
+  addEventListener('load', () => setTimeout(() =>
+    document.documentElement.classList.add('is-ready'), 900
   ));
 
   /* ---------- SCROLL REVEAL ---------- */
@@ -365,10 +379,19 @@
   const cards = $$('.work-card');
   const items = cards.map(c => ({
     full: c.dataset.full,
+    fullFb: c.dataset.fullFb || '',
     title: $('.work-title', c).textContent,
     meta: $('.work-meta', c).textContent
   }));
   let lbIndex = 0, lastFocus = null;
+
+  // фолбэк полноразмерной картинки в лайтбоксе
+  lbImg.addEventListener('error', () => {
+    const it = items[lbIndex];
+    if (!it || !it.fullFb || lbImg.dataset.fbIdx === String(lbIndex)) return;
+    lbImg.dataset.fbIdx = String(lbIndex);
+    lbImg.src = it.fullFb;
+  });
 
   const lbRender = () => {
     const it = items[lbIndex];
